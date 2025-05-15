@@ -49,6 +49,15 @@ RIGHT JOIN: Listar todas las ubicaciones comerciales y las transacciones
 realizadas en ellas, incluyendo aquellas ubicaciones donde 
 aún no se han registrado transacciones.
 **/
+SELECT
+    tr.transaction_id AS id_transaction,
+    ml.location_id AS id_locations
+
+FROM fintech.transactions AS tr
+RIGHT JOIN fintech.merchant_locations AS ml
+  ON tr.location_id = ml.location_id
+
+LIMIT 10;
 
 
 
@@ -58,7 +67,19 @@ incluyendo franquicias que no están asociadas a ningún país
 específico y países que no tienen franquicias operando en ellos.
 **/
 
+SELECT 
+    fr.name AS franchise,
+    c.name AS country    
+
+FROM fintech.franchises AS fr
+
+FULL JOIN fintech.countries AS c
+    ON fr.country_code = c.country_code
+
+limit 10;
+
 /**
 SELF JOIN: Encontrar pares de transacciones realizadas por el mismo 
 cliente en la misma ubicación comercial en diferentes
 **/
+
