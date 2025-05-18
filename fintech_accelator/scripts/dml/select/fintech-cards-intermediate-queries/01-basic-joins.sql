@@ -83,3 +83,22 @@ SELF JOIN: Encontrar pares de transacciones realizadas por el mismo
 cliente en la misma ubicación comercial en diferentes
 **/
 
+SELECT 
+    cl.first_name || ' ' || COALESCE(cl.middle_name, '') || ' ' || cl.last_name AS client,
+    ml.store_name AS store,
+    t1.transaction_id AS transaction_1,
+    t1.transaction_date AS date_1,
+    t2.transaction_id AS transaction_2,
+    t2.transaction_date AS date_2
+
+FROM fintech.transactions t1
+JOIN fintech.transactions t2
+    ON t1.card_id = t2.card_id
+    AND t1.location_id = t2.location_id
+    AND t1.transaction_id < t2.transaction_id
+
+JOIN fintech.credit_cards cc ON t1.card_id = cc.card_id
+JOIN fintech.clients cl ON cc.client_id = cl.client_id
+JOIN fintech.merchant_locations ml ON t1.location_id = ml.location_id
+
+LIMIT 10;
