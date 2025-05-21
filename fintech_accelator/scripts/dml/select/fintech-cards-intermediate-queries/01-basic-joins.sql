@@ -55,9 +55,7 @@ SELECT
 
 FROM fintech.transactions AS tr
 RIGHT JOIN fintech.merchant_locations AS ml
-  ON tr.location_id = ml.location_id
-
-LIMIT 10;
+  ON tr.location_id = ml.location_id;
 
 
 

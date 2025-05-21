@@ -76,30 +76,14 @@ MIN y MAX: Mostrar el monto de transacción más bajo y más alto para cada
 cliente, junto con la fecha en que ocurrieron, para identificar patrones 
 de gasto extremos.
 **/
-
 SELECT 
     cl.client_id,
     (cl.first_name || ' ' || cl.last_name) AS client,
-
     MIN(tr.amount) AS min_transaction,
-    MAX(tr.amount) AS max_transaction,
-
-    (SELECT tr1.transaction_date 
-     FROM fintech.transactions tr1 
-     WHERE tr1.card_id = cc.card_id 
-     ORDER BY tr1.amount ASC 
-     LIMIT 1) AS date_min,
-
-    (SELECT tr2.transaction_date 
-     FROM fintech.transactions tr2 
-     WHERE tr2.card_id = cc.card_id 
-     ORDER BY tr2.amount DESC 
-     LIMIT 1) AS date_max
-
+    MAX(tr.amount) AS max_transaction
 FROM fintech.transactions AS tr
 JOIN fintech.credit_cards AS cc ON tr.card_id = cc.card_id
 JOIN fintech.clients AS cl ON cc.client_id = cl.client_id
-
-GROUP BY cl.client_id, cl.first_name, cl.last_name, cc.card_id
+GROUP BY cl.client_id, cl.first_name, cl.last_name
 ORDER BY cl.client_id
 LIMIT 10;
